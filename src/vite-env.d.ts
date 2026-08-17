@@ -21,6 +21,7 @@ interface Window {
       fishTextures: (string | undefined)[];
     };
     collide(fishId: string): void;
+    stunProbe(): { initial: number; beforeExpiry: number; afterExpiry: number };
     consumeExisting(count: number): number;
     edgeProbe(): { x: number; velocityX: number; minimumX: number };
     directionProbe(): {

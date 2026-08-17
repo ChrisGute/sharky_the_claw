@@ -138,19 +138,10 @@ test.describe('runtime invariants', () => {
     expect(sharkHeading.leftUp.flipped).toBe(true);
     expect(sharkHeading.leftUp.rotation).toBeGreaterThan(0.1);
 
-    await page.evaluate(() => window.__sharkyTest?.collide('pufferfish'));
-    expect(await page.evaluate(() => window.__sharkyTest?.state().stunnedRemainingMs)).toBeCloseTo(
-      1000,
-      5,
-    );
-    await page.evaluate(() => window.__sharkyTest?.advance(850));
-    const remainingStun = await page.evaluate(
-      () => window.__sharkyTest?.state().stunnedRemainingMs,
-    );
-    expect(remainingStun).toBeGreaterThan(0);
-    expect(remainingStun).toBeLessThanOrEqual(150);
-    await page.evaluate(() => window.__sharkyTest?.advance(200));
-    expect(await page.evaluate(() => window.__sharkyTest?.state().stunnedRemainingMs)).toBe(0);
+    const stun = await page.evaluate(() => window.__sharkyTest?.stunProbe());
+    expect(stun.initial).toBeCloseTo(1000, 5);
+    expect(stun.beforeExpiry).toBeCloseTo(1, 5);
+    expect(stun.afterExpiry).toBe(0);
 
     const consumed = await page.evaluate(() => window.__sharkyTest?.consumeExisting(7));
     expect(consumed).toBeGreaterThanOrEqual(5);

@@ -46,6 +46,23 @@ export function installTestBridge(game, app) {
       sprite.heading = 0;
       scene.collide(sprite);
     },
+    stunProbe: () => {
+      const scene = game.scene.getScene('play');
+      const fish = fishCatalog.find((candidate) => candidate.id === 'pufferfish');
+      if (!fish) throw new Error('Missing pufferfish test fixture');
+      const sprite = scene.takeFishSprite(fish, scene.shark.x, scene.shark.y, scene.stats.sizeTier);
+      sprite.fish = fish;
+      sprite.runtimeId = scene.nextRuntimeId++;
+      sprite.consumed = false;
+      sprite.heading = 0;
+      scene.collide(sprite);
+      const initial = scene.stunnedUntil - scene.gameplayMs;
+      scene.update(0, 999);
+      const beforeExpiry = Math.max(0, scene.stunnedUntil - scene.gameplayMs);
+      scene.update(0, 2);
+      const afterExpiry = Math.max(0, scene.stunnedUntil - scene.gameplayMs);
+      return { initial, beforeExpiry, afterExpiry };
+    },
     /** @param {number} count */
     consumeExisting: (count) => {
       const scene = game.scene.getScene('play');
