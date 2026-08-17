@@ -18,6 +18,19 @@ test.describe('runtime invariants', () => {
     expect(art.activeFish).toBeGreaterThanOrEqual(15);
     expect(art.fishTextures.every((texture) => texture?.startsWith('fish-'))).toBe(true);
 
+    const authoredArt = await page.evaluate(() => window.__sharkyTest?.artProbe());
+    expect(authoredArt.shark).toEqual({ width: 190, height: 118 });
+    expect(Object.keys(authoredArt.fish)).toHaveLength(7);
+    for (const dimensions of Object.values(authoredArt.fish)) {
+      expect(dimensions.width).toBeGreaterThanOrEqual(68);
+      expect(dimensions.height).toBeGreaterThanOrEqual(38);
+    }
+
+    const animation = await page.evaluate(() => window.__sharkyTest?.animationProbe());
+    expect(animation.sharkLater.x).not.toBeCloseTo(animation.sharkStart.x, 5);
+    expect(animation.sharkLater.y).not.toBeCloseTo(animation.sharkStart.y, 5);
+    expect(animation.fishLater).not.toBeCloseTo(animation.fishStart, 5);
+
     await page.evaluate(() => window.__sharkyTest?.collide('minnow'));
     await expect(page.getByTestId('score')).toHaveText('1');
     await page.evaluate(() => window.__sharkyTest?.advance(3100));
@@ -118,8 +131,12 @@ test.describe('runtime invariants', () => {
     const sharkHeading = await page.evaluate(() => window.__sharkyTest?.sharkHeadingProbe());
     expect(sharkHeading.rightDown.flipped).toBe(false);
     expect(sharkHeading.rightDown.rotation).toBeGreaterThan(0.1);
+    expect(sharkHeading.rightUp.flipped).toBe(false);
+    expect(sharkHeading.rightUp.rotation).toBeLessThan(-0.1);
     expect(sharkHeading.leftDown.flipped).toBe(true);
     expect(sharkHeading.leftDown.rotation).toBeLessThan(-0.1);
+    expect(sharkHeading.leftUp.flipped).toBe(true);
+    expect(sharkHeading.leftUp.rotation).toBeGreaterThan(0.1);
 
     await page.evaluate(() => window.__sharkyTest?.collide('pufferfish'));
     expect(await page.evaluate(() => window.__sharkyTest?.state().stunnedRemainingMs)).toBeCloseTo(

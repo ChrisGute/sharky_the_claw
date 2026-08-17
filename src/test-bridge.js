@@ -90,22 +90,51 @@ export function installTestBridge(game, app) {
         left: { velocityX: active[1].body.velocity.x, flipped: active[1].flipX },
       };
     },
+    artProbe: () => {
+      const scene = game.scene.getScene('play');
+      /** @param {string} textureKey */
+      const dimensions = (textureKey) => {
+        const frame = scene.textures.getFrame(textureKey);
+        return { width: frame.realWidth, height: frame.realHeight };
+      };
+      return {
+        shark: dimensions('shark'),
+        fish: Object.fromEntries(
+          fishCatalog.map((fish) => [fish.textureKey, dimensions(fish.textureKey)]),
+        ),
+      };
+    },
     sharkHeadingProbe: () => {
       const scene = game.scene.getScene('play');
       const body = scene.shark.body;
-      body.setVelocity(0, 0);
-      scene.shark.setRotation(0).setFlipX(false);
-      scene.target = { x: scene.shark.x + 100, y: scene.shark.y + 100 };
-      scene.updatePlayer(16, scene.gameplayMs);
-      const rightDown = { rotation: scene.shark.rotation, flipped: scene.shark.flipX };
-      body.setVelocity(0, 0);
-      scene.shark.setRotation(0).setFlipX(false);
-      scene.target = { x: scene.shark.x - 100, y: scene.shark.y + 100 };
-      scene.updatePlayer(16, scene.gameplayMs);
-      return {
-        rightDown,
-        leftDown: { rotation: scene.shark.rotation, flipped: scene.shark.flipX },
+      const probe = (x, y) => {
+        body.setVelocity(0, 0);
+        scene.shark.setRotation(0).setFlipX(false);
+        scene.target = { x: scene.shark.x + x, y: scene.shark.y + y };
+        scene.updatePlayer(16, scene.gameplayMs);
+        return { rotation: scene.shark.rotation, flipped: scene.shark.flipX };
       };
+      return {
+        rightDown: probe(100, 100),
+        rightUp: probe(100, -100),
+        leftDown: probe(-100, 100),
+        leftUp: probe(-100, -100),
+      };
+    },
+    animationProbe: () => {
+      const scene = game.scene.getScene('play');
+      const fish = scene.fishGroup.getChildren().find((candidate) => candidate.active);
+      if (!fish) throw new Error('No active fish for animation probe');
+      scene.target = { x: scene.shark.x, y: scene.shark.y };
+      scene.updatePlayer(16, 0);
+      const sharkStart = { x: scene.shark.scaleX, y: scene.shark.scaleY };
+      scene.updatePlayer(16, 90);
+      const sharkLater = { x: scene.shark.scaleX, y: scene.shark.scaleY };
+      fish.runtimeId = 0;
+      scene.updateFish(0, 0);
+      const fishStart = fish.rotation;
+      scene.updateFish(0, 180);
+      return { sharkStart, sharkLater, fishStart, fishLater: fish.rotation };
     },
     grant: (coins) => app.profiles.transact((profile) => ({ ...profile, coins })),
     buy: (upgradeId) => app.buy(upgradeId),

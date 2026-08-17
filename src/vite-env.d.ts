@@ -27,9 +27,21 @@ interface Window {
       right: { velocityX: number; flipped: boolean };
       left: { velocityX: number; flipped: boolean };
     };
+    artProbe(): {
+      shark: { width: number; height: number };
+      fish: Record<string, { width: number; height: number }>;
+    };
     sharkHeadingProbe(): {
       rightDown: { rotation: number; flipped: boolean };
+      rightUp: { rotation: number; flipped: boolean };
       leftDown: { rotation: number; flipped: boolean };
+      leftUp: { rotation: number; flipped: boolean };
+    };
+    animationProbe(): {
+      sharkStart: { x: number; y: number };
+      sharkLater: { x: number; y: number };
+      fishStart: number;
+      fishLater: number;
     };
     grant(coins: number): void;
     buy(upgradeId: string): unknown;
