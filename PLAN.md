@@ -13,7 +13,9 @@ The August release review found that Phases 1–4 were substantially present, bu
 - Round replay explicitly resumes the shared audio context before restarting music, closing the scene-shutdown race that previously silenced later rounds.
 - Playwright now asserts real character textures, live score behavior, mute/HUD stability, replay state, lifecycle soak, accessibility, nested deployment, and cross-browser startup. Screenshot byte counts are retained only as an additional render-health signal.
 
-Remaining release acceptance outside automation: physical iOS/Android audio, touch, orientation, and performance checks; supervised child usability testing; and deployed GitHub Pages URL/SHA verification. These stay explicit release gates and must not be inferred from desktop emulation.
+The GitHub Pages workflow now performs a bounded post-deploy browser check against the emitted public URL, exercises title → level → gameplay boot, rejects failed or external asset requests and incorrect MIME types, and verifies the exact deployed build SHA.
+
+Remaining release acceptance outside automation: physical iOS/Android audio, touch, orientation, and performance checks and supervised child usability testing. These stay explicit release gates and must not be inferred from desktop emulation.
 
 1. Technical Direction
    Build a static, client-only browser game with:

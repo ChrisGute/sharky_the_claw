@@ -14,6 +14,7 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "node ./scripts/run-e2e.js",
     "audit:lighthouse": "npm run build && node ./scripts/audit-lighthouse.js",
+    "verify:deployment": "node ./scripts/verify-deployment.js",
     "build": "vite build",
     "check:production": "node ./scripts/check-production.js",
     "preview": "vite preview"

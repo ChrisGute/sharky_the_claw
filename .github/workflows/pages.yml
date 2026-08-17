@@ -42,6 +42,7 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
       - run: npm ci
+      - run: npx playwright install --with-deps chromium
       - run: npm run build
         env:
           VITE_BUILD_SHA: ${{ github.sha }}
@@ -49,3 +50,4 @@ jobs:
         with: { path: dist }
       - id: deployment
         uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128
+      - run: npm run verify:deployment -- "${{ steps.deployment.outputs.page_url }}" "${{ github.sha }}"
