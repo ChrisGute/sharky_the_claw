@@ -16,14 +16,15 @@ jobs:
       - uses: actions/setup-node@1e60f620b9541d1051d7b9a8f4a5dfcbf97e1045
         with: { node-version: 24, cache: npm }
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium firefox webkit
       - run: npm run format:check
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run validate:content
       - run: npm run test:coverage
-      - run: npm run build
-      - run: npm run test:e2e -- --project=chromium
+      - run: npm run test:e2e
+      - run: npm run audit:lighthouse
+      - run: npm run check:production
   deploy:
     needs: validate
     permissions:
