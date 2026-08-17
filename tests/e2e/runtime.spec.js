@@ -34,10 +34,23 @@ test.describe('runtime invariants', () => {
     await page.evaluate(() => window.__sharkyTest?.collide('minnow'));
     await expect(page.getByTestId('score')).toHaveText('1');
     await page.evaluate(() => window.__sharkyTest?.advance(3100));
-    const timeBeforeMute = await page.getByTestId('timer').textContent();
+    const roundBeforeMute = await page.evaluate(() => window.__sharkyTest?.state().round);
+    await page.evaluate(() =>
+      Reflect.set(window, '__timerIdentity', document.querySelector('[data-testid="timer"]')),
+    );
     await page.getByRole('button', { name: 'Mute sound' }).click();
     await expect(page.getByTestId('score')).toHaveText('1');
-    await expect(page.getByTestId('timer')).toHaveText(timeBeforeMute || '');
+    const roundAfterMute = await page.evaluate(() => window.__sharkyTest?.state().round);
+    expect(roundAfterMute.phase).toBe('active');
+    expect(roundAfterMute.remainingMs).toBeLessThanOrEqual(roundBeforeMute.remainingMs);
+    expect(roundAfterMute.remainingMs).toBeGreaterThan(roundBeforeMute.remainingMs - 1000);
+    expect(
+      await page.evaluate(
+        () =>
+          Reflect.get(window, '__timerIdentity') ===
+          document.querySelector('[data-testid="timer"]'),
+      ),
+    ).toBe(true);
   });
 
   test('pause freezes time and settlement banks exactly once', async ({ page }) => {
