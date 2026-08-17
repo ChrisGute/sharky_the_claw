@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="190" height="118" viewBox="0 0 190 118">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#79e8ef"/>
+      <stop offset=".52" stop-color="#36b9da"/>
+      <stop offset="1" stop-color="#1686b7"/>
+    </linearGradient>
+    <linearGradient id="belly" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#f7ffff"/><stop offset="1" stop-color="#b9ebf0"/>
+    </linearGradient>
+  </defs>
+  <!-- The source character faces right. There is exactly one tail, on the left. -->
+  <path d="M48 39C76 16 127 17 158 39c21 15 21 29 0 42-31 19-82 17-110-7L9 94l15-35L9 24z" fill="url(#body)" stroke="#07547c" stroke-width="5" stroke-linejoin="round"/>
+  <path d="m76 28 18-25 17 28" fill="url(#body)" stroke="#07547c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m83 82-18 30 42-24" fill="url(#body)" stroke="#07547c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M50 66c25 25 77 27 111 3-28 36-87 37-113 5z" fill="url(#belly)"/>
+  <ellipse cx="143" cy="43" rx="9" ry="10" fill="#fff" stroke="#07547c" stroke-width="3"/>
+  <circle cx="146" cy="44" r="4" fill="#112f46"/><circle cx="148" cy="41" r="1.5" fill="#fff"/>
+  <path d="M142 64c9 7 19 6 25-1" fill="none" stroke="#123d56" stroke-width="4" stroke-linecap="round"/>
+  <path d="m150 67 4 5 4-6" fill="#fff"/>
+  <path d="M119 50c-5 4-5 10 0 14m9-16c-5 5-4 12 1 16" fill="none" stroke="#167ca5" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="101" cy="41" r="3" fill="#a6f7f7" opacity=".75"/>
+</svg>

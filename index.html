@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#067b9e" />
+    <title>Sharky the Claw</title>
+  </head>
+  <body>
+    <main id="app">
+      <section id="loading-ui" aria-live="polite" aria-label="Game loading">
+        <img src="./src/assets/shark.svg" width="96" height="64" alt="A smiling shark" />
+        <p>Loading Sharky the Claw…</p>
+      </section>
+      <section id="error-ui" hidden role="alert">
+        <h1>We could not start the game</h1>
+        <p>Please reload and try again.</p>
+        <button type="button" id="reload-button">Reload</button>
+      </section>
+      <div id="game-shell" role="application" aria-label="Sharky the Claw game" tabindex="0"></div>
+      <div id="ui-root" aria-live="polite"></div>
+    </main>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
